@@ -15,18 +15,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 #[Route('/user')]
 class UserController extends AbstractController
 {
-    #[Route('/{username}', name: 'app_profile')]
-    public function index(?User $user): Response
-    {
-        if (!$user) {
-            return $this->redirectToRoute('app_home');
-        }
-        return $this->render('user/index.html.twig',[
-            'user' => $user
-        ]);
-    }
 
-    #[Route('/register', name: 'app_register')]
+    #[Route(path: '/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -73,5 +63,16 @@ class UserController extends AbstractController
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    #[Route(path: '/{username}', name: 'app_profile')]
+    public function index(?User $user): Response
+    {
+        if (!$user) {
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->render('user/index.html.twig',[
+            'user' => $user
+        ]);
     }
 }
